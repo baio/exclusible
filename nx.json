@@ -29,6 +29,9 @@
   "projects": {
     "exchange-api": {
       "tags": []
+    },
+    "kraken-client": {
+      "tags": []
     }
   }
 }
