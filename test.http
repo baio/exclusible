@@ -2,10 +2,12 @@
 
 ### 
 Post {{host}}/config/spread
+Content-Type: application/json 
+Accept: application/json
 
 {
-  "buy": -2,
-  "sell": 2
+  "buy": -1,
+  "sell": 1
 }
 
 

@@ -1,5 +1,5 @@
 import { ISpreadConfig } from '@exclusible/shared';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const DEFAULT_ID = 1;
 
@@ -13,7 +13,7 @@ export class ConfigEntity {
     }
   }
 
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
   @Column()

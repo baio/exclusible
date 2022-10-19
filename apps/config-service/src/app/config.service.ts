@@ -17,9 +17,11 @@ export class ConfigService {
   ) {}
 
   async setSpreadConfig(config: ISpreadConfig) {
-    Logger.debug(`ConfigService:setSpreadConfig ${config}`);
+    Logger.debug(`ConfigService:setSpreadConfig`, config);
     const entity = new ConfigEntity(config);
-    await this.configRepository.save(entity);
+    Logger.debug(entity);
+    const result = await this.configRepository.save(entity);
+    Logger.debug(result);
     return config;
   }
 
