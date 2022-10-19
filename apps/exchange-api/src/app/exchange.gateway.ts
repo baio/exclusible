@@ -6,8 +6,10 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import {
+  filter,
   from,
   map,
+  merge,
   Observable,
   shareReplay,
   switchMap,
@@ -43,17 +45,10 @@ const parseJson = (str: string) => {
   }
 };
 
-const mapKrakenEvent = (config: ISpreadConfig, data: string): WsResponse => {
-  const json = parseJson(data);
-  const channelName = json[2];
-  if (channelName === 'trade') {
-    const price = +json[1][0][0];
-    const rate = mapKrakenPrice(config, price);
-    return { event: 'exchangeRate', data: [rate.buy, rate.sell] };
-  } else {
-    // convert any other event to `heartbeat`
-    return { event: 'heartbeat', data: null };
-  }
+const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
+  const price = +json[1][0][0];
+  const rate = mapKrakenPrice(config, price);
+  return { event: 'exchangeRate', data: [rate.buy, rate.sell] };
 };
 
 @WebSocketGateway({
@@ -66,25 +61,42 @@ export class ExchangeGateway {
   server: Server;
 
   private readonly krakenWs: WebSocket;
-  private readonly krakenStream$: Observable<WsResponse>;
+  private readonly subscription$: Observable<WsResponse>;
 
   constructor(private readonly configService: ConfigService) {
     this.krakenWs = new WebSocket('wss://ws.kraken.com/');
 
     const duplex = createWebSocketStream(this.krakenWs, { encoding: 'utf8' });
 
-    const data$ = from(duplex).pipe(shareReplay(0));
-    const config$ = data$.pipe(
+    const data$ = from(duplex).pipe(shareReplay(0), map(parseJson));
+
+    // split data stream into 2, one for `trade` data and other for everything else
+
+    // heartbeat
+    const heartbeat$ = data$.pipe(filter((d) => d[2] !== 'trade')).pipe(
+      map(() =>
+        // convert any other event to `heartbeat`
+        ({ event: 'heartbeat', data: null })
+      )
+    );
+    
+    // trade
+    const trade$ = data$.pipe(filter((d) => d[2] === 'trade'));
+
+    const config$ = trade$.pipe(
       // TODO : cache
       switchMap(() => this.configService.getSpreadConfig())
     );
 
-    this.krakenStream$ = data$.pipe(
+    const exchange$ = trade$.pipe(
       withLatestFrom(config$),
       map(([data, config]) => {
         return mapKrakenEvent(config, data);
       })
     );
+
+    // emit events both from heartbeat and exchange streams
+    this.subscription$ = merge(heartbeat$, exchange$);
 
     this.krakenWs.on('open', () => {
       this.krakenWs.send(
@@ -95,6 +107,6 @@ export class ExchangeGateway {
 
   @SubscribeMessage('subscribe')
   subscribe() {
-    return this.krakenStream$;
+    return this.subscription$;
   }
 }
