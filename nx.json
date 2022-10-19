@@ -32,6 +32,18 @@
     },
     "kraken-client": {
       "tags": []
+    },
+    "rabbit-service-config": {
+      "tags": []
+    },
+    "rabbit-service-factory": {
+      "tags": []
+    },
+    "rabbit-service-proxies": {
+      "tags": []
+    },
+    "shared": {
+      "tags": []
     }
   }
 }

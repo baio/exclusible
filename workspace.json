@@ -102,6 +102,94 @@
           }
         }
       }
+    },
+    "rabbit-service-config": {
+      "root": "libs/rabbit-service-config",
+      "sourceRoot": "libs/rabbit-service-config/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/rabbit-service-config/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/rabbit-service-config"],
+          "options": {
+            "jestConfig": "libs/rabbit-service-config/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "rabbit-service-factory": {
+      "root": "libs/rabbit-service-factory",
+      "sourceRoot": "libs/rabbit-service-factory/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/rabbit-service-factory/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/rabbit-service-factory"],
+          "options": {
+            "jestConfig": "libs/rabbit-service-factory/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "rabbit-service-proxies": {
+      "root": "libs/rabbit-service-proxies",
+      "sourceRoot": "libs/rabbit-service-proxies/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/rabbit-service-proxies/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/rabbit-service-proxies"],
+          "options": {
+            "jestConfig": "libs/rabbit-service-proxies/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared": {
+      "root": "libs/shared",
+      "sourceRoot": "libs/shared/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/shared/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared"],
+          "options": {
+            "jestConfig": "libs/shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

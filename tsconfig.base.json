@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@exclusible/rabbit-service-config": [
+        "libs/rabbit-service-config/src/index.ts"
+      ],
+      "@exclusible/rabbit-service-factory": [
+        "libs/rabbit-service-factory/src/index.ts"
+      ],
+      "@exclusible/rabbit-service-proxies": [
+        "libs/rabbit-service-proxies/src/index.ts"
+      ],
+      "@exclusible/shared": ["libs/shared/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
