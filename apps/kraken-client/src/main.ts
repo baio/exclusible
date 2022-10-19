@@ -21,12 +21,14 @@ import { io, Socket } from 'socket.io-client';
 const socket = io('http://localhost:3333');
 
 socket.on('connect', function open() {
-  console.log('open');
-  //ws.send('{"event":"subscribe", "subscription":{"name":"ticker"}, "pair":["BTC/USD"]}');
-  socket.emit('ping', 1);
+  console.log('connect');
+  socket.emit('subscribe');
 });
 
-socket.on('pong', function message(data) {
-  console.log('received', data);
+socket.on('exchangeRate', function message(data) {
+  console.log('exchangeRate', data);
 });
 
+socket.on('heartbeat', function message(data) {
+  console.log('heartbeat', data);
+});
