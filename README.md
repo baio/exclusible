@@ -10,3 +10,4 @@ https://docs.kraken.com/websockets/#connectionDetails
 https://docs.kraken.com/websockets/#message-ticker
 https://rxjs.dev/api/webSocket/webSocket
 https://docs.kraken.com/websockets/#message-trade
+https://redux-observable.js.org/
