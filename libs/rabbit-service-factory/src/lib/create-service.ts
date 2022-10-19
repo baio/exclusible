@@ -19,9 +19,7 @@ export const createService = async (config: IConfig, module: any) => {
     }
   );
   app.useGlobalFilters(new DomainExceptionFilter());
-  await app.listen(() => {
-    return null;
-  });
+  await app.listen();
 };
 
 export const createServiceDefaultConfig = async (

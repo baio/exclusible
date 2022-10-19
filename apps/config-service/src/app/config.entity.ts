@@ -5,10 +5,12 @@ export const DEFAULT_ID = 1;
 
 @Entity()
 export class ConfigEntity {
-  constructor(spreadConfig: ISpreadConfig) {
+  constructor(spreadConfig?: ISpreadConfig) {
     this.id = DEFAULT_ID;
-    this.spreadBuyOffset = spreadConfig.buy;
-    this.spreadSellOffset = spreadConfig.sell;
+    if (spreadConfig) {
+      this.spreadBuyOffset = spreadConfig.buy;
+      this.spreadSellOffset = spreadConfig.sell;
+    }
   }
 
   @PrimaryGeneratedColumn()
