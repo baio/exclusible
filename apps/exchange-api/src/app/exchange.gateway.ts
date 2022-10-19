@@ -5,7 +5,14 @@ import {
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
-import { from, map, Observable, shareReplay, withLatestFrom } from 'rxjs';
+import {
+  from,
+  map,
+  Observable,
+  shareReplay,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs';
 import { Server } from 'socket.io';
 
 import { createWebSocketStream, WebSocket } from 'ws';
@@ -66,11 +73,17 @@ export class ExchangeGateway {
 
     const duplex = createWebSocketStream(this.krakenWs, { encoding: 'utf8' });
 
-    this.krakenStream$ = from(duplex).pipe(
+    const data$ = from(duplex).pipe(shareReplay(0));
+    const config$ = data$.pipe(
       // TODO : cache
-      withLatestFrom(this.configService.getSpreadConfig()),
-      map(([data, config]) => mapKrakenEvent(config, data)),
-      shareReplay(0)
+      switchMap(() => this.configService.getSpreadConfig())
+    );
+
+    this.krakenStream$ = data$.pipe(
+      withLatestFrom(config$),
+      map(([data, config]) => {
+        return mapKrakenEvent(config, data);
+      })
     );
 
     this.krakenWs.on('open', () => {

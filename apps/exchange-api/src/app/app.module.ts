@@ -12,6 +12,6 @@ import { ExchangeGateway } from './exchange.gateway';
     ),
   ],
   controllers: [ConfigController],
-  providers: [ConfigService],
+  providers: [ExchangeGateway, ConfigService],
 })
 export class AppModule {}

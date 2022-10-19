@@ -6,8 +6,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "buy": -1,
-  "sell": 1
+  "buy": -500,
+  "sell": 1000
 }
 
 
