@@ -12,3 +12,4 @@ https://rxjs.dev/api/webSocket/webSocket
 https://docs.kraken.com/websockets/#message-trade
 https://redux-observable.js.org/
 https://auth0.com/docs/quickstart/spa/react/01-login
+https://auth0.com/blog/developing-a-secure-api-with-nestjs-adding-authorization/
