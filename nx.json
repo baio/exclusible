@@ -27,6 +27,9 @@
     ]
   },
   "projects": {
+    "config-service": {
+      "tags": []
+    },
     "exchange-api": {
       "tags": []
     },
