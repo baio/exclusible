@@ -12,16 +12,20 @@ import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class ConfigServiceProxy implements IConfigServiceProxy {
   constructor(
-    @Inject(CONFIG_SERVICE_NAME) private readonly brokerService: ClientProxy
+    @Inject(CONFIG_SERVICE_NAME)
+    private readonly configServiceProxy: ClientProxy
   ) {}
   setSpreadConfig(config: ISpreadConfig): Promise<void> {
     return lastValueFrom(
-      this.brokerService.send(CONFIG_SERVICE_SET_SPREAD_PATTERN_NAME, config)
+      this.configServiceProxy.send(
+        CONFIG_SERVICE_SET_SPREAD_PATTERN_NAME,
+        config
+      )
     );
   }
-  getSpreadConfig(): Promise<ISpreadConfig> {
-    return lastValueFrom(
-      this.brokerService.send(CONFIG_SERVICE_GET_SPREAD_PATTERN_NAME, null)
+  async getSpreadConfig(): Promise<ISpreadConfig> {
+    return await lastValueFrom(
+      this.configServiceProxy.send(CONFIG_SERVICE_GET_SPREAD_PATTERN_NAME, {})
     );
   }
 }

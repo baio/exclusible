@@ -1,20 +1,15 @@
+import { ISpreadConfig } from '@exclusible/shared';
 import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
-import { from, map, Observable, shareReplay } from 'rxjs';
+import { from, map, Observable, shareReplay, withLatestFrom } from 'rxjs';
 import { Server } from 'socket.io';
 
 import { createWebSocketStream, WebSocket } from 'ws';
-
-export interface ISpreadConfig {
-  // fixed number to add to current price for buying
-  buy: number;
-  // fixed number to add to current price for selling
-  sell: number;
-}
+import { ConfigService } from './config.service';
 
 export interface IExchangeRate {
   buy: number;
@@ -66,15 +61,15 @@ export class ExchangeGateway {
   private readonly krakenWs: WebSocket;
   private readonly krakenStream$: Observable<WsResponse>;
 
-  constructor() {
-    const config: ISpreadConfig = { buy: -1, sell: 1 };
-
+  constructor(private readonly configService: ConfigService) {
     this.krakenWs = new WebSocket('wss://ws.kraken.com/');
 
     const duplex = createWebSocketStream(this.krakenWs, { encoding: 'utf8' });
 
     this.krakenStream$ = from(duplex).pipe(
-      map((data) => mapKrakenEvent(config, data)),
+      // TODO : cache
+      withLatestFrom(this.configService.getSpreadConfig()),
+      map(([data, config]) => mapKrakenEvent(config, data)),
       shareReplay(0)
     );
 

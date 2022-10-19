@@ -2,7 +2,7 @@ import { readConfig } from '@exclusible/rabbit-service-config';
 import { CONFIG_SERVICE_NAME, CONFIG_SERVICE_PROXY } from '@exclusible/shared';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ConfigServiceProxy } from './a-service-proxy';
+import { ConfigServiceProxy } from './config-service-proxy';
 
 import { IConfig } from './config';
 

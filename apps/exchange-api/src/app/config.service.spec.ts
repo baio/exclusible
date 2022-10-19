@@ -1,21 +1,21 @@
 import { Test } from '@nestjs/testing';
 
-import { AppService } from './app.service';
+import { ConfigService } from './config.service';
 
-describe('AppService', () => {
-  let service: AppService;
+describe('ConfigService', () => {
+  let service: ConfigService;
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [AppService],
+      providers: [ConfigService],
     }).compile();
 
-    service = app.get<AppService>(AppService);
+    service = app.get<ConfigService>(ConfigService);
   });
 
   describe('getData', () => {
     it('should return "Welcome to exchange-api!"', () => {
-      expect(service.getData()).toEqual({
+      expect(null).toEqual({
         message: 'Welcome to exchange-api!',
       });
     });

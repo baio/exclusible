@@ -1,12 +1,17 @@
+import { ConfigServiceProxyModule } from '@exclusible/rabbit-service-proxies';
 import { Module } from '@nestjs/common';
+import { ConfigController } from './config.controller';
+import { ConfigService } from './config.service';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ExchangeGateway } from './exchange.gateway';
 
 @Module({
-  imports: [],
-  controllers: [],
-  providers: [ExchangeGateway],
+  imports: [
+    ConfigServiceProxyModule.registerDefaultConfig(
+      process.env.RABBIT_CONFIG_QUEUE
+    ),
+  ],
+  controllers: [ConfigController],
+  providers: [ConfigService],
 })
 export class AppModule {}

@@ -24,7 +24,6 @@ export class ConfigController {
   getSpreadConfig() {
     // we could validate IMessage fields here or even create dto with validation attributes on fields,
     // but since this method is called only from code controlled by us it safe to skip it for simplicity
-
     return this.configService.getSpreadConfig();
   }
 }

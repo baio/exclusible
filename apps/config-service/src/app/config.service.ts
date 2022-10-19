@@ -26,6 +26,7 @@ export class ConfigService {
   async getSpreadConfig() {
     Logger.debug('ConfigService:getSpreadConfig');
     const result = await this.configRepository.findOneBy({ id: DEFAULT_ID });
+    Logger.debug('get entity', result);
     if (!result) {
       // config yet not set return default one
       return defaultSpreadConfig;
