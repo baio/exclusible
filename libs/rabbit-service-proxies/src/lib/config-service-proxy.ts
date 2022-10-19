@@ -1,4 +1,5 @@
 import {
+  CONFIG_SERVICE_GET_SPREAD_PATTERN_NAME,
   CONFIG_SERVICE_NAME,
   CONFIG_SERVICE_SET_SPREAD_PATTERN_NAME,
   IConfigServiceProxy,
@@ -20,7 +21,7 @@ export class ConfigServiceProxy implements IConfigServiceProxy {
   }
   getSpreadConfig(): Promise<ISpreadConfig> {
     return lastValueFrom(
-      this.brokerService.send(CONFIG_SERVICE_SET_SPREAD_PATTERN_NAME, config)
+      this.brokerService.send(CONFIG_SERVICE_GET_SPREAD_PATTERN_NAME, null)
     );
   }
 }

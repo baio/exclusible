@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  rabbit:
+    image: rabbitmq:3-alpine
+    hostname: 
+      exclusible-rabbit
+    ports:
+      - 5672:5671
+    networks:
+      - exclusible-net
+
+  postgres:
+    image: postgres:11-alpine
+    # volumes:
+    #   - docker-data/postgres:/var/lib/postgresql/data postgres:11-alpine
+    ports:
+      - 5432:5431
+    environment:
+      - POSTGRES_USER=exclusible 
+      - POSTGRES_PASSWORD=123       
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=exclusible
+    networks:
+      - exclusible-net
+
+
+
+networks:
+    exclusible-net:
