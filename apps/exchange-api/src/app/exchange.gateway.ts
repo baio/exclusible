@@ -15,7 +15,6 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs';
-import { Server } from 'socket.io';
 
 import { createWebSocketStream, WebSocket } from 'ws';
 import { ConfigService } from './config.service';
@@ -57,9 +56,6 @@ const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
   },
 })
 export class ExchangeGateway {
-  @WebSocketServer()
-  server: Server;
-
   private readonly krakenWs: WebSocket;
   private readonly subscription$: Observable<WsResponse>;
 
@@ -79,7 +75,7 @@ export class ExchangeGateway {
         ({ event: 'heartbeat', data: null })
       )
     );
-    
+
     // trade
     const trade$ = data$.pipe(filter((d) => d[2] === 'trade'));
 
@@ -107,6 +103,7 @@ export class ExchangeGateway {
 
   @SubscribeMessage('subscribe')
   subscribe() {
+    console.log('subscribe');
     return this.subscription$;
   }
 }
