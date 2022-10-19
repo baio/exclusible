@@ -7,7 +7,7 @@ let started = false;
 
 export function Index() {
   const dispatch = useAppDispatch();
-  
+
   useEffect(() => {
     if (!started) {
       dispatch(subscribeExchange());
@@ -19,9 +19,10 @@ export function Index() {
   return (
     <ul>
       Latest rates
+      <li>buy | sell | time (UTC) </li>
       {rateState.rates.map((rate) => (
         <li key={rate.timestamp}>
-          {rate.buy} | {rate.sell}
+          {rate.buy} | {rate.sell} | {new Date(rate.timestamp).toUTCString()}
         </li>
       ))}
     </ul>

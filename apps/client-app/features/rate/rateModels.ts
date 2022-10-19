@@ -4,6 +4,11 @@ export interface Rate {
   timestamp: number;
 }
 
+export interface WsEvent {
+  event: 'exchangeRate' | 'heartbeat';
+  data: [number, number, number];
+}
+
 export interface RateState {
   rates: Rate[];
 }

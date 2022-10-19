@@ -2,7 +2,6 @@ import { ISpreadConfig } from '@exclusible/shared';
 import {
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
 import {
@@ -22,14 +21,17 @@ import { ConfigService } from './config.service';
 export interface IExchangeRate {
   buy: number;
   sell: number;
+  timestamp: number;
 }
 
 const mapKrakenPrice = (
   config: ISpreadConfig,
-  price: number
+  price: number,
+  timestamp: number
 ): IExchangeRate => ({
   buy: price + config.buy,
   sell: price + config.sell,
+  timestamp,
 });
 
 /**
@@ -46,8 +48,9 @@ const parseJson = (str: string) => {
 
 const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
   const price = +json[1][0][0];
-  const rate = mapKrakenPrice(config, price);
-  return { event: 'exchangeRate', data: [rate.buy, rate.sell] };
+  const timestamp = +json[1][0][2] * 1000;
+  const rate = mapKrakenPrice(config, price, timestamp);
+  return { event: 'exchangeRate', data: [rate.buy, rate.sell, rate.timestamp] };
 };
 
 @WebSocketGateway({
