@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'rabbit-service-proxies',
+/* eslint-disable */
+export default {
+  displayName: 'rabbit-service-factory',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/rabbit-service-proxies',
+  coverageDirectory: '../../coverage/libs/rabbit-service-factory',
 };

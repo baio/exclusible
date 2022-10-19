@@ -7,13 +7,19 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "executor": "@nrwl/webpack:webpack",
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/config-service",
             "main": "apps/config-service/src/main.ts",
             "tsConfig": "apps/config-service/tsconfig.app.json",
-            "assets": ["apps/config-service/src/assets"]
+            "assets": [
+              "apps/config-service/src/assets"
+            ],
+            "target": "node",
+            "compiler": "tsc"
           },
           "configurations": {
             "production": {
@@ -30,27 +36,34 @@
           }
         },
         "serve": {
-          "executor": "@nrwl/node:execute",
+          "executor": "@nrwl/node:node",
           "options": {
             "buildTarget": "config-service:build"
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/config-service/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/config-service/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/config-service"],
+          "outputs": [
+            "{workspaceRoot}/coverage/apps/config-service"
+          ],
           "options": {
-            "jestConfig": "apps/config-service/jest.config.js",
+            "jestConfig": "apps/config-service/jest.config.ts",
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "exchange-api": {
       "root": "apps/exchange-api",
@@ -58,13 +71,19 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "executor": "@nrwl/webpack:webpack",
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/exchange-api",
             "main": "apps/exchange-api/src/main.ts",
             "tsConfig": "apps/exchange-api/tsconfig.app.json",
-            "assets": ["apps/exchange-api/src/assets"]
+            "assets": [
+              "apps/exchange-api/src/assets"
+            ],
+            "target": "node",
+            "compiler": "tsc"
           },
           "configurations": {
             "production": {
@@ -81,27 +100,34 @@
           }
         },
         "serve": {
-          "executor": "@nrwl/node:execute",
+          "executor": "@nrwl/node:node",
           "options": {
             "buildTarget": "exchange-api:build"
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/exchange-api/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/exchange-api/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/exchange-api"],
+          "outputs": [
+            "{workspaceRoot}/coverage/apps/exchange-api"
+          ],
           "options": {
-            "jestConfig": "apps/exchange-api/jest.config.js",
+            "jestConfig": "apps/exchange-api/jest.config.ts",
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "kraken-client": {
       "root": "apps/kraken-client",
@@ -109,13 +135,19 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "executor": "@nrwl/webpack:webpack",
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/kraken-client",
             "main": "apps/kraken-client/src/main.ts",
             "tsConfig": "apps/kraken-client/tsconfig.app.json",
-            "assets": ["apps/kraken-client/src/assets"]
+            "assets": [
+              "apps/kraken-client/src/assets"
+            ],
+            "target": "node",
+            "compiler": "tsc"
           },
           "configurations": {
             "production": {
@@ -132,27 +164,34 @@
           }
         },
         "serve": {
-          "executor": "@nrwl/node:execute",
+          "executor": "@nrwl/node:node",
           "options": {
             "buildTarget": "kraken-client:build"
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/kraken-client/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/kraken-client/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/kraken-client"],
+          "outputs": [
+            "{workspaceRoot}/coverage/apps/kraken-client"
+          ],
           "options": {
-            "jestConfig": "apps/kraken-client/jest.config.js",
+            "jestConfig": "apps/kraken-client/jest.config.ts",
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "rabbit-service-config": {
       "root": "libs/rabbit-service-config",
@@ -161,20 +200,27 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/rabbit-service-config/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/rabbit-service-config/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/rabbit-service-config"],
+          "outputs": [
+            "{workspaceRoot}/coverage/libs/rabbit-service-config"
+          ],
           "options": {
-            "jestConfig": "libs/rabbit-service-config/jest.config.js",
+            "jestConfig": "libs/rabbit-service-config/jest.config.ts",
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "rabbit-service-factory": {
       "root": "libs/rabbit-service-factory",
@@ -183,20 +229,27 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/rabbit-service-factory/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/rabbit-service-factory/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/rabbit-service-factory"],
+          "outputs": [
+            "{workspaceRoot}/coverage/libs/rabbit-service-factory"
+          ],
           "options": {
-            "jestConfig": "libs/rabbit-service-factory/jest.config.js",
+            "jestConfig": "libs/rabbit-service-factory/jest.config.ts",
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "rabbit-service-proxies": {
       "root": "libs/rabbit-service-proxies",
@@ -205,20 +258,27 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/rabbit-service-proxies/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/rabbit-service-proxies/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/rabbit-service-proxies"],
+          "outputs": [
+            "{workspaceRoot}/coverage/libs/rabbit-service-proxies"
+          ],
           "options": {
-            "jestConfig": "libs/rabbit-service-proxies/jest.config.js",
+            "jestConfig": "libs/rabbit-service-proxies/jest.config.ts",
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "shared": {
       "root": "libs/shared",
@@ -227,24 +287,28 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/shared/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/shared/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared"],
+          "outputs": [
+            "{workspaceRoot}/coverage/libs/shared"
+          ],
           "options": {
-            "jestConfig": "libs/shared/jest.config.js",
+            "jestConfig": "libs/shared/jest.config.ts",
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     }
   },
-  "cli": {
-    "defaultCollection": "@nrwl/nest"
-  },
-  "defaultProject": "exchange-api"
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
