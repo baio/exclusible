@@ -1,4 +1,4 @@
 export interface ISpreadConfig {
-  buy: number;
-  sell: number;  
+  buyOffset: number;
+  sellOffset: number;  
 }

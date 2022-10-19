@@ -3,3 +3,6 @@ export interface SpreadConfig {
   sellOffset: number;
 }
 
+export interface ConfigState {
+  spread: SpreadConfig;
+}

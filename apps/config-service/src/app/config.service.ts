@@ -5,8 +5,8 @@ import { Repository } from 'typeorm';
 import { ConfigEntity, DEFAULT_ID } from './config.entity';
 
 const defaultSpreadConfig: ISpreadConfig = {
-  buy: -1,
-  sell: 1,
+  buyOffset: -1,
+  sellOffset: 1,
 };
 
 @Injectable()
@@ -25,7 +25,7 @@ export class ConfigService {
     return config;
   }
 
-  async getSpreadConfig() {
+  async getSpreadConfig(): Promise<ISpreadConfig> {
     Logger.debug('ConfigService:getSpreadConfig');
     const result = await this.configRepository.findOneBy({ id: DEFAULT_ID });
     Logger.debug('get entity', result);
@@ -33,7 +33,10 @@ export class ConfigService {
       // config yet not set return default one
       return defaultSpreadConfig;
     } else {
-      return { buy: result.spreadBuyOffset, sell: result.spreadSellOffset };
+      return {
+        buyOffset: result.spreadBuyOffset,
+        sellOffset: result.spreadSellOffset,
+      };
     }
   }
 }

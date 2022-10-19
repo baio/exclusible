@@ -5,6 +5,7 @@ import styles from './index.module.css';
 import RatesList from '../components/RatesList';
 import ConfigForm from '../components/ConfigForm';
 import { SpreadConfig } from '../features/config/configModels';
+import { loadConfig, selectConfig } from '../features/config/configSlice';
 
 let started = false;
 
@@ -14,6 +15,7 @@ export function Index() {
   useEffect(() => {
     if (!started) {
       dispatch(subscribeExchange());
+      dispatch(loadConfig());
     }
     started = true;
   });
@@ -24,12 +26,10 @@ export function Index() {
   };
 
   const rateState = useAppSelector(selectRate);
+  const configState = useAppSelector(selectConfig);
   return (
     <>
-      <ConfigForm
-        config={{ buyOffset: -1, sellOffset: 1 }}
-        onSet={onSet}
-      ></ConfigForm>
+      <ConfigForm config={configState.spread} onSet={onSet}></ConfigForm>
       <RatesList rates={rateState.rates}></RatesList>
     </>
   );

@@ -5,7 +5,7 @@ import { webSocket } from 'rxjs/webSocket';
 
 import { Rate, RateState, WsEvent } from './rateModels';
 
-export const subscribeExchange = createAction('app/subscribeExchange');
+export const subscribeExchange = createAction('rate/subscribeExchange');
 
 export const rateEpic$ = (action$: Observable<any>) =>
   action$.pipe(

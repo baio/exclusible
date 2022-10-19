@@ -7,11 +7,11 @@ import { ConfigService } from './config.service';
 export class SpreadConfigDto implements ISpreadConfig {
   @IsNotEmpty()
   @IsNumber()
-  buy: number;
+  buyOffset: number;
 
   @IsNotEmpty()
   @IsNumber()
-  sell: number;
+  sellOffset: number;
 }
 
 @Controller('config')

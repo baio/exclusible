@@ -29,8 +29,8 @@ const mapKrakenPrice = (
   price: number,
   timestamp: number
 ): IExchangeRate => ({
-  buy: price + config.buy,
-  sell: price + config.sell,
+  buy: price + config.buyOffset,
+  sell: price + config.sellOffset,
   timestamp,
 });
 

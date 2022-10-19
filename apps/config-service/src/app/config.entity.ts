@@ -8,8 +8,8 @@ export class ConfigEntity {
   constructor(spreadConfig?: ISpreadConfig) {
     this.id = DEFAULT_ID;
     if (spreadConfig) {
-      this.spreadBuyOffset = spreadConfig.buy;
-      this.spreadSellOffset = spreadConfig.sell;
+      this.spreadBuyOffset = spreadConfig.buyOffset;
+      this.spreadSellOffset = spreadConfig.sellOffset;
     }
   }
 
