@@ -5,7 +5,8 @@ import styles from './index.module.css';
 import RatesList from '../components/RatesList';
 import ConfigForm from '../components/ConfigForm';
 import { SpreadConfig } from '../features/config/configModels';
-import { loadConfig, selectConfig } from '../features/config/configSlice';
+import { configSlice, loadConfig, selectConfig } from '../features/config/configSlice';
+import { saveSpreadConfig } from '../features/config/configService';
 
 let started = false;
 
@@ -20,10 +21,8 @@ export function Index() {
     started = true;
   });
 
-  const onSet = (config: SpreadConfig) => {
-    console.log('+++', config);
-    return Promise.resolve();
-  };
+  const onSet = async (config: SpreadConfig) => 
+    saveSpreadConfig(config);
 
   const rateState = useAppSelector(selectRate);
   const configState = useAppSelector(selectConfig);

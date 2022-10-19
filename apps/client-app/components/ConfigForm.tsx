@@ -1,9 +1,11 @@
+import { ISpreadConfig } from '@exclusible/shared';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { SpreadConfig } from '../features/config/configModels';
+import { ApiResult, Result } from '../features/shared';
 
 export interface ConfigFormProps {
   config: SpreadConfig;
-  onSet: (evt: SpreadConfig) => Promise<void>;
+  onSet: (evt: SpreadConfig) => Promise<ApiResult<ISpreadConfig>>;
 }
 
 const ConfigForm = ({ onSet, config }: ConfigFormProps) => {
@@ -17,8 +19,14 @@ const ConfigForm = ({ onSet, config }: ConfigFormProps) => {
           values,
           { setSubmitting, setFieldValue, setFieldError, setFieldTouched }
         ) => {
-          await onSet(values);
+          const result = await onSet(values);
           setSubmitting(false);
+          if (result.kind === 'ok') {
+            console.log('success');
+          } else {
+            // TODO : Error handling here
+            console.error(result.error);
+          }
         }}
       >
         <Form>
