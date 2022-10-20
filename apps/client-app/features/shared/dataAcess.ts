@@ -4,9 +4,6 @@ import { ApiResult } from './sharedModels';
 
 const client = axios.create({
   baseURL: appConfig.api.baseUrl,
-  headers: {
-    'Content-type': 'application/json',
-  },
 });
 
 export const setAxiosTokenInterceptor = async (
@@ -17,7 +14,7 @@ export const setAxiosTokenInterceptor = async (
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     } else {
-      config.headers.common = null;
+      config.headers.common.delete('Authorization');
     }
     return config;
   });

@@ -6,8 +6,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "buy": -500,
-  "sell": 1000
+  "buyOffset": -500,
+  "sellOffset": 1000
 }
 
 
