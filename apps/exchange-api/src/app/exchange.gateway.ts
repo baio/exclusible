@@ -1,5 +1,5 @@
 import { ISpreadConfig } from '@exclusible/shared';
-import { Logger } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   SubscribeMessage,
@@ -7,16 +7,12 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import {
-  BehaviorSubject,
   filter,
   map,
   merge,
   Observable,
-  ReplaySubject,
   shareReplay,
-  Subject,
   switchMap,
-  take,
   tap,
 } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
@@ -49,6 +45,8 @@ const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
 
 const CACHE_SIZE = 5;
 
+export const WS_URL = 'WS_URL';
+
 @WebSocketGateway({
   cors: {
     origin: '*',
@@ -57,9 +55,12 @@ const CACHE_SIZE = 5;
 export class ExchangeGateway implements OnGatewayConnection {
   private readonly subscription$: Observable<WsResponse>;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    @Inject(WS_URL) wsUrl: string,
+    private readonly configService: ConfigService
+  ) {
     const ws$ = webSocket<WsResponse>({
-      url: 'wss://ws.kraken.com/',
+      url: wsUrl,
       WebSocketCtor: ws,
     });
 

@@ -1,25 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { passportJwtSecret } from 'jwks-rsa';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-const AUTH0_ISSUER_URL = process.env.AUTH0_ISSUER_URL;
+export const AUTH0_ISSUER_URL = 'AUTH0_ISSUER_URL';
 
-// TODO : Pass params through config !
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(@Inject(AUTH0_ISSUER_URL) issuerUrl: string) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: false,
         rateLimit: false,
         jwksRequestsPerMinute: 5,
-        jwksUri: `${AUTH0_ISSUER_URL}.well-known/jwks.json`,
+        jwksUri: `${issuerUrl}.well-known/jwks.json`,
       }),
 
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: `${AUTH0_ISSUER_URL}api/v2/`,
-      issuer: AUTH0_ISSUER_URL,
+      audience: `${issuerUrl}api/v2/`,
+      issuer: issuerUrl,
       algorithms: ['RS256'],
     });
   }
