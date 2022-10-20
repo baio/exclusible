@@ -11,7 +11,7 @@ export interface ConfigFormProps {
 const ConfigForm = ({ onSet, config }: ConfigFormProps) => {
   return (
     <div>
-      <h2>Spread config</h2>
+      <h2 className='subtitle'>Spread config</h2>
       <Formik
         enableReinitialize={true}
         initialValues={config}
@@ -30,11 +30,31 @@ const ConfigForm = ({ onSet, config }: ConfigFormProps) => {
         }}
       >
         <Form>
-          <label>Buy offset:</label>
-          <Field type="number" name="buyOffset" placeholder="Buy offset" />
-          <label>Sell offset:</label>
-          <Field type="number" name="sellOffset" placeholder="Sell offset" />
-          <button type="submit">Save</button>
+          <div className="field">
+            <label className="label">Buy offset</label>
+            <div className="control">
+              <Field
+                className="input"
+                type="number"
+                name="buyOffset"
+                placeholder="Buy offset"
+              />
+            </div>
+          </div>
+          <div className="field">
+            <label className="label">Sell offset</label>
+            <div className="control">
+              <Field
+                className="input"
+                type="number"
+                name="sellOffset"
+                placeholder="Sell offset"
+              />
+            </div>
+          </div>
+          <button type="submit" className="button is-primary">
+            Save
+          </button>
         </Form>
       </Formik>
     </div>

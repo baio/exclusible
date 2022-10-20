@@ -17,8 +17,7 @@ let wasAuthenticated = false;
 export function Index() {
   const dispatch = useAppDispatch();
 
-  const { isAuthenticated, getAccessTokenSilently } =
-    useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     if (!started) {
@@ -40,7 +39,10 @@ export function Index() {
 
   return (
     <>
-      <Auth></Auth>
+      <p className="title">
+        <Auth></Auth>
+      </p>
+
       {isAuthenticated && (
         <ConfigForm config={configState.spread} onSet={onSet}></ConfigForm>
       )}

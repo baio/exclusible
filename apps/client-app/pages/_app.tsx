@@ -1,19 +1,17 @@
+import { Auth0Provider } from '@auth0/auth0-react';
 import { AppProps } from 'next/app';
-import Head from 'next/head';
-import './styles.css';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
-import { Auth0Provider } from '@auth0/auth0-react';
 import appConfig from '../config';
-import { useEffect, useState } from 'react';
+import './styles.css';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <Head>
-        <title>Welcome to client-app!</title>
-      </Head>
-      <main className="app">
+    <section className="hero">
+      <div className="hero-head">
+        <h1 className="title has-text-centered">BTC/USD Rates</h1>
+      </div>
+      <div className="hero-body">
         <Auth0Provider
           domain={appConfig.auth0.domain}
           clientId={appConfig.auth0.clientId}
@@ -24,8 +22,8 @@ function CustomApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </Provider>
         </Auth0Provider>
-      </main>
-    </>
+      </div>
+    </section>
   );
 }
 

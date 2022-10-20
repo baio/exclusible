@@ -5,12 +5,21 @@ const Auth = () => {
   return (
     <>
       {isAuthenticated ? (
-        <button onClick={() => logout({ returnTo: window.location.origin })}>
+        <button
+          className="button is-link"
+          onClick={() => logout({ returnTo: window.location.origin })}
+        >
           Log Out
         </button>
       ) : (
         <>
-          To get access to admin panel <button onClick={() => loginWithPopup()}>Log In</button>{' '}          
+          To get access to admin panel{' '}
+          <button
+            className="button is-link"
+            onClick={() => loginWithPopup()}
+          >
+            Log In
+          </button>{' '}
         </>
       )}
     </>
