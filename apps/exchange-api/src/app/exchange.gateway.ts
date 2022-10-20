@@ -6,7 +6,19 @@ import {
   WebSocketGateway,
   WsResponse,
 } from '@nestjs/websockets';
-import { filter, map, merge, Observable, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  map,
+  merge,
+  Observable,
+  ReplaySubject,
+  shareReplay,
+  Subject,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
 import { ConfigService } from './config.service';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -35,13 +47,14 @@ const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
   return { event: 'exchangeRate', data: [rate.buy, rate.sell, rate.timestamp] };
 };
 
+const CACHE_SIZE = 5;
+
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
 export class ExchangeGateway implements OnGatewayConnection {
-  private readonly krakenWs: WebSocket;
   private readonly subscription$: Observable<WsResponse>;
 
   constructor(private readonly configService: ConfigService) {
@@ -53,7 +66,7 @@ export class ExchangeGateway implements OnGatewayConnection {
     const data$ = ws$.pipe(
       tap((evt) => {
         if (evt.event === 'systemStatus') {
-          console.log('subscribe !', evt);
+          Logger.debug('subscribe to kraken', evt);
           ws$.next({
             event: 'subscribe',
             subscription: { name: 'trade' },
@@ -61,7 +74,7 @@ export class ExchangeGateway implements OnGatewayConnection {
           } as any);
         }
       })
-    ); //.pipe(shareReplay(0));
+    );
 
     // split data stream into 2, one for `trade` data and other for everything else
 
@@ -85,8 +98,10 @@ export class ExchangeGateway implements OnGatewayConnection {
 
     const exchange$ = tradeWithSpread$.pipe(
       map(({ data, config }) => {
-        return mapKrakenEvent(config, data);
-      })
+        const evt = mapKrakenEvent(config, data);
+        return evt;
+      }),
+      shareReplay(CACHE_SIZE)
     );
 
     // emit events both from heartbeat and exchange streams
@@ -99,7 +114,7 @@ export class ExchangeGateway implements OnGatewayConnection {
 
   @SubscribeMessage('subscribe')
   subscribe() {
-    Logger.debug('new subscribtion');
+    Logger.debug('new subscription');
     return this.subscription$;
   }
 }
