@@ -6,7 +6,7 @@
     "start:client-app": "nx serve client-app",
     "start:exchange-api": "nx serve exchange-api",
     "start:config-service": "nx serve config-service",
-    "build:client-app": "next build apps/client-app && next export",
+    "build:client-app": "nx export client-app",
     "build:exchange-api": "nx build exchange-api",
     "build:config-service": "nx build config-service"
   },

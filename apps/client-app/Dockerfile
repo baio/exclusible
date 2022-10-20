@@ -17,6 +17,6 @@ RUN yarn build:client-app --configuration=production
 
 # Stage 2 - the production environment
 FROM nginx:1.23-alpine
-COPY --from=build-deps /app/dist/apps/client-app/.next/server/pages /usr/share/nginx/html
+COPY --from=build-deps /app/dist/apps/client-app/exported /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
