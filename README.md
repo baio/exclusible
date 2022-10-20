@@ -12,6 +12,7 @@ Run everything in docker `docker-compose up` then go to browser and open `http:/
 
 + Rates for BTC/USD are taken from (kraken trade websocket api)[https://docs.kraken.com/websockets/#message-trade] 
 + After new trade price received `buy / sell offset` added to the price value and application `exchangeRate` event emitted
++ Once spread config is changed next `exchangeRate` event will be emitted with new spread based on recent trade
 
 ### WS protocol 
 
@@ -24,6 +25,12 @@ Run everything in docker `docker-compose up` then go to browser and open `http:/
 If subscription to `kraken ws api` fails server will try to re-establish connection with `KRAKEN_FAILURE_RETRY_DELAY` interval (3000 by default), can test by turnoff network on your local machine
 
 If client subscription to `application ws api` fails client will try to re-establish connection, you can test it by shutdown server (docker-compose) and then run it again.
+
+### Efficiency
+
+Subscription to `kraken ws api` would be establish only if some client is connected to the application, once client disconnected kraken connection also would be closed
+
+All application clients would be subscribed to the same kraken stream
 
 ## Project structure
 
@@ -59,6 +66,11 @@ To access following API user should be authorized
 ```
 
 > Note: If you change API or Web client port to serve application, authorization will stop to work since it requires changes in `Auth0` configuration settings such as `Allowed callback url`
+
+## Other notes
+
++ There is no tests at the moment due to the lack of time
++ Documentation generation also absent
 
 ## Task description
 

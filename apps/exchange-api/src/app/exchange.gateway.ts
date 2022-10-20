@@ -83,6 +83,7 @@ export class ExchangeGateway implements OnGatewayConnection {
     const config$ = configServiceProxy.subscribeSpreadConfigChanged();
 
     const data$ = ws$.pipe(
+      // reconnect on failure
       retry(retryConfig),
       tap((evt) => {
         if (evt.event === 'systemStatus') {
