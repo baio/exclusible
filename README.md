@@ -12,7 +12,7 @@ Run everything in docker `docker-compose up` then go to browser and open `http:/
 
 + Rates for BTC/USD are taken from (kraken trade websocket api)[https://docs.kraken.com/websockets/#message-trade] 
 + After new trade price received `buy / sell offset` added to the price value and application `exchangeRate` event emitted
-+ Once spread config is changed next `exchangeRate` event will be emitted with new spread based on recent trade
++ Once spread config is changed next `exchangeRate` event will be emitted with new spread based on recent trade and spread config
 
 ### WS protocol 
 
@@ -30,7 +30,7 @@ If client subscription to `application ws api` fails client will try to re-estab
 
 Subscription to `kraken ws api` would be establish only if some client is connected to the application, once client disconnected kraken connection also would be closed
 
-All application clients would be subscribed to the same kraken stream
+All application clients are subscribed to the same kraken stream
 
 ## Project structure
 
@@ -53,7 +53,6 @@ microservices which communicate with each other, main rules here:
 + Proxy microservice implementation related to particular transport should be done in separate library
 + Link between proxy interface definition and implementation should be done app boostraping with DI
 
-
 ## Authorization
 
 Though task has following requirement `Mock an API for register/login/logout with JWT authentication`. Current implementation uses (Auth0 service)[https://auth0.com/] to provide real authorization implementation using jwt tokens.
@@ -68,7 +67,7 @@ To access following API user should be authorized
 > Note: If you change API or Web client port to serve application, authorization will stop to work since it requires changes in `Auth0` configuration settings such as `Allowed callback url`
 
 ## Other notes
-
++ postman collection is in `postman` folder you need to update Authorization header (jwt toke n could be copied from the client request)
 + There is no tests at the moment due to the lack of time
 + Documentation generation also absent
 

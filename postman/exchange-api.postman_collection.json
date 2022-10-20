@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "aff6078e-f247-42b6-9bcd-88edc18bdab6",
+		"name": "exchange-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2362468"
+	},
+	"item": [
+		{
+			"name": "post spread",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVvX1RqX3hoY3F0emJqalRKTURsSyJ9.eyJpc3MiOiJodHRwczovL2JhaW8uZXUuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTA4NjYzNTQzMTc4NjAwMjI4NjU3IiwiYXVkIjpbImh0dHBzOi8vYmFpby5ldS5hdXRoMC5jb20vYXBpL3YyLyIsImh0dHBzOi8vYmFpby5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjY2MjkxMzAwLCJleHAiOjE2NjYzNzc3MDAsImF6cCI6IjVUaGlkNnVDRHRGNUUxam1XYjV6eFFram9PM0hpUVg0Iiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.jrGufRHFUmGCEu0NIGOeDq-K4nMXJ03vwYGmvHBJphuNq0G4cd5aQECYiXiAspQMLaoVFFoLsCaTZAjKwF0G9IabaNSnQrR9sbyvwLOLETsPYAZXRnoe1dEFR6MnQ_9zjn6V01i9U8caz2AYq-AJY8GZL-uD6gDggIZt2jkIVF6ail3dgU8b8BVYGCWyEdYcUK84bmblGbO8GOfscU7RTxwMdMS7H0t3aXBcIiyvM78PC2HGcRXtGTw9w5WLtZ7Gwop62o8KDCBFWBZV14WdvNKjkpJpVNCeP9rVU1lb7mhtYI2MvsNamKmxhNPWnT8prGoTT2TyZFX6fB7m9Fo21Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"buyOffset\": -200,\r\n  \"sellOffset\": 200\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/config/spread",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"config",
+						"spread"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get spread",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVvX1RqX3hoY3F0emJqalRKTURsSyJ9.eyJpc3MiOiJodHRwczovL2JhaW8uZXUuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTA4NjYzNTQzMTc4NjAwMjI4NjU3IiwiYXVkIjpbImh0dHBzOi8vYmFpby5ldS5hdXRoMC5jb20vYXBpL3YyLyIsImh0dHBzOi8vYmFpby5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjY2MjkxMzAwLCJleHAiOjE2NjYzNzc3MDAsImF6cCI6IjVUaGlkNnVDRHRGNUUxam1XYjV6eFFram9PM0hpUVg0Iiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.jrGufRHFUmGCEu0NIGOeDq-K4nMXJ03vwYGmvHBJphuNq0G4cd5aQECYiXiAspQMLaoVFFoLsCaTZAjKwF0G9IabaNSnQrR9sbyvwLOLETsPYAZXRnoe1dEFR6MnQ_9zjn6V01i9U8caz2AYq-AJY8GZL-uD6gDggIZt2jkIVF6ail3dgU8b8BVYGCWyEdYcUK84bmblGbO8GOfscU7RTxwMdMS7H0t3aXBcIiyvM78PC2HGcRXtGTw9w5WLtZ7Gwop62o8KDCBFWBZV14WdvNKjkpJpVNCeP9rVU1lb7mhtYI2MvsNamKmxhNPWnT8prGoTT2TyZFX6fB7m9Fo21Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"buyOffset\": -200,\r\n  \"sellOffset\": 200\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/config/spread",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"config",
+						"spread"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
