@@ -1,4 +1,5 @@
 import { ISpreadConfig } from '@exclusible/shared';
+import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   SubscribeMessage,
@@ -13,7 +14,6 @@ import {
   Observable,
   shareReplay,
   switchMap,
-  withLatestFrom,
 } from 'rxjs';
 
 import { createWebSocketStream, WebSocket } from 'ws';
@@ -84,13 +84,14 @@ export class ExchangeGateway implements OnGatewayConnection {
     // trade
     const trade$ = data$.pipe(filter((d) => d[2] === 'trade'));
 
-    const config$ = trade$.pipe(
-      // TODO : cache
-      switchMap(() => this.configService.getSpreadConfig())
+    const tradeWithSpread$ = trade$.pipe(
+      switchMap(async (trade) => {
+        const spread = await this.configService.getSpreadConfig();
+        return [trade, spread];
+      })
     );
 
-    const exchange$ = trade$.pipe(
-      withLatestFrom(config$),
+    const exchange$ = tradeWithSpread$.pipe(
       map(([data, config]) => {
         return mapKrakenEvent(config, data);
       })
@@ -106,7 +107,7 @@ export class ExchangeGateway implements OnGatewayConnection {
     });
   }
   handleConnection(client: WebSocket, ...args: any[]) {
-    console.log('new connection');
+    Logger.debug('new connection');
     client.send('{"event": "open"}');
   }
 
