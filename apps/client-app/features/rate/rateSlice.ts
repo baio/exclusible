@@ -5,8 +5,10 @@ import { webSocket } from 'rxjs/webSocket';
 import { RootState } from '../../app/store';
 import { retry, RetryConfig, tap } from 'rxjs/operators';
 
+const WS_RETRY_DELAY = 3000;
+
 const retryConfig: RetryConfig = {
-  delay: 3000,
+  delay: WS_RETRY_DELAY,
 };
 
 import { Rate, RateState, WsEvent } from './rateModels';

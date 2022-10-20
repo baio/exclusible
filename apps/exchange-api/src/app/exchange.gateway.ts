@@ -6,18 +6,11 @@ import {
   WebSocketGateway,
   WsResponse,
 } from '@nestjs/websockets';
-import {
-  filter,
-  from,
-  map,
-  merge,
-  Observable,
-  shareReplay,
-  switchMap,
-} from 'rxjs';
-
-import { createWebSocketStream, WebSocket } from 'ws';
+import { filter, map, merge, Observable, switchMap, tap } from 'rxjs';
+import { webSocket } from 'rxjs/webSocket';
 import { ConfigService } from './config.service';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const ws = require('ws');
 
 export interface IExchangeRate {
   buy: number;
@@ -35,18 +28,6 @@ const mapKrakenPrice = (
   timestamp,
 });
 
-/**
- * Parse json safely, if the string is not Json object return empty array
- */
-const parseJson = (str: string) => {
-  try {
-    const json = JSON.parse(str);
-    return json;
-  } catch {
-    return [];
-  }
-};
-
 const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
   const price = +json[1][0][0];
   const timestamp = +json[1][0][2] * 1000;
@@ -61,15 +42,26 @@ const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
 })
 export class ExchangeGateway implements OnGatewayConnection {
   private readonly krakenWs: WebSocket;
-  private readonly open$: Observable<WsResponse>;
   private readonly subscription$: Observable<WsResponse>;
 
   constructor(private readonly configService: ConfigService) {
-    this.krakenWs = new WebSocket('wss://ws.kraken.com/');
+    const ws$ = webSocket<WsResponse>({
+      url: 'wss://ws.kraken.com/',
+      WebSocketCtor: ws,
+    });
 
-    const duplex = createWebSocketStream(this.krakenWs, { encoding: 'utf8' });
-
-    const data$ = from(duplex).pipe(shareReplay(0), map(parseJson));
+    const data$ = ws$.pipe(
+      tap((evt) => {
+        if (evt.event === 'systemStatus') {
+          console.log('subscribe !', evt);
+          ws$.next({
+            event: 'subscribe',
+            subscription: { name: 'trade' },
+            pair: ['BTC/USD'],
+          } as any);
+        }
+      })
+    ); //.pipe(shareReplay(0));
 
     // split data stream into 2, one for `trade` data and other for everything else
 
@@ -85,26 +77,20 @@ export class ExchangeGateway implements OnGatewayConnection {
     const trade$ = data$.pipe(filter((d) => d[2] === 'trade'));
 
     const tradeWithSpread$ = trade$.pipe(
-      switchMap(async (trade) => {
-        const spread = await this.configService.getSpreadConfig();
-        return [trade, spread];
+      switchMap(async (data) => {
+        const config = await this.configService.getSpreadConfig();
+        return { data, config };
       })
     );
 
     const exchange$ = tradeWithSpread$.pipe(
-      map(([data, config]) => {
+      map(({ data, config }) => {
         return mapKrakenEvent(config, data);
       })
     );
 
     // emit events both from heartbeat and exchange streams
     this.subscription$ = merge(heartbeat$, exchange$);
-
-    this.krakenWs.on('open', () => {
-      this.krakenWs.send(
-        '{"event":"subscribe", "subscription":{"name":"trade"}, "pair":["BTC/USD"]}'
-      );
-    });
   }
   handleConnection(client: WebSocket, ...args: any[]) {
     Logger.debug('new connection');
@@ -113,7 +99,7 @@ export class ExchangeGateway implements OnGatewayConnection {
 
   @SubscribeMessage('subscribe')
   subscribe() {
-    console.log('subscribe');
+    Logger.debug('new subscribtion');
     return this.subscription$;
   }
 }
