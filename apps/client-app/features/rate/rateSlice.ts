@@ -36,9 +36,10 @@ export const rateEpic$ = (action$: Observable<any>) =>
     map((evt) => evt.data),
     map((data) => {
       return rateSlice.actions.appendRate({
-        buy: data[0],
-        sell: data[1],
-        timestamp: data[2],
+        id: data[0],
+        buy: data[1],
+        sell: data[2],
+        timestamp: data[3],
       });
     })
   );

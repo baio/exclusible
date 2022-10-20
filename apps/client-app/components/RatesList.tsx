@@ -17,7 +17,7 @@ const RatesList = ({ rates }: RatesListProps) => {
         </thead>
         <tbody>
           {rates.map((rate, i) => (
-            <tr className={i === 0 ? 'is-selected' : null} key={rate.timestamp}>
+            <tr className={i === 0 ? 'is-selected' : null} key={rate.id}>
               <td>{rate.buy}</td>
               <td>{rate.sell}</td>
               <td>{new Date(rate.timestamp).toUTCString()}</td>

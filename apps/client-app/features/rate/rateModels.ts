@@ -1,4 +1,5 @@
 export interface Rate {
+  id: string, 
   buy: number;
   sell: number;
   timestamp: number;
@@ -6,7 +7,7 @@ export interface Rate {
 
 export interface WsEvent {
   event: 'exchangeRate' | 'heartbeat' | 'open';
-  data: [number, number, number];
+  data: [string, number, number, number];
 }
 
 export interface RateState {

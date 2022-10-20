@@ -1,4 +1,5 @@
-import { ISpreadConfig } from '@exclusible/shared';
+import { ConfigServiceProxy } from '@exclusible/rabbit-service-proxies';
+import { CONFIG_SERVICE_PROXY, ISpreadConfig } from '@exclusible/shared';
 import { Inject, Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
@@ -7,18 +8,17 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import {
+  combineLatest,
   filter,
   map,
   merge,
   Observable,
   retry,
-  shareReplay,
-  switchMap,
-  tap,
   RetryConfig,
+  shareReplay,
+  tap,
 } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
-import { ConfigService } from './config.service';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ws = require('ws');
 
@@ -42,7 +42,11 @@ const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
   const price = +json[1][0][0];
   const timestamp = +json[1][0][2] * 1000;
   const rate = mapKrakenPrice(config, price, timestamp);
-  return { event: 'exchangeRate', data: [rate.buy, rate.sell, rate.timestamp] };
+  const id = `${new Date().getTime()}_${timestamp}`;
+  return {
+    event: 'exchangeRate',
+    data: [id, rate.buy, rate.sell, rate.timestamp],
+  };
 };
 
 const CACHE_SIZE = 5;
@@ -64,7 +68,8 @@ export class ExchangeGateway implements OnGatewayConnection {
 
   constructor(
     @Inject(GATEWAY_CONFIG) config: IGatewayConfig,
-    private readonly configService: ConfigService
+    @Inject(CONFIG_SERVICE_PROXY)
+    configServiceProxy: ConfigServiceProxy
   ) {
     const retryConfig: RetryConfig = {
       delay: config.failureRetryDelay,
@@ -74,6 +79,8 @@ export class ExchangeGateway implements OnGatewayConnection {
       url: config.wsUrl,
       WebSocketCtor: ws,
     });
+
+    const config$ = configServiceProxy.subscribeSpreadConfigChanged();
 
     const data$ = ws$.pipe(
       retry(retryConfig),
@@ -102,18 +109,12 @@ export class ExchangeGateway implements OnGatewayConnection {
     // trade
     const trade$ = data$.pipe(filter((d) => d[2] === 'trade'));
 
-    const tradeWithSpread$ = trade$.pipe(
-      switchMap(async (data) => {
-        const config = await this.configService.getSpreadConfig();
-        return { data, config };
-      })
+    const tradeWithSpread$ = combineLatest([trade$, config$]).pipe(
+      map(([data, config]) => ({ data, config }))
     );
 
     const exchange$ = tradeWithSpread$.pipe(
-      map(({ data, config }) => {
-        const evt = mapKrakenEvent(config, data);
-        return evt;
-      }),
+      map(({ data, config }) => mapKrakenEvent(config, data)),
       // cache latest rates, once new client connected they will ber received at once
       shareReplay(CACHE_SIZE)
     );

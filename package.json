@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "start:client-app": "nx serve client-app",
-    "start:kraken-client": "nx serve kraken-client",
     "start:exchange-api": "nx serve exchange-api",
     "start:config-service": "nx serve config-service",
-    "build": "nx build",
-    "test": "nx test"
+    "build:client-app": "nx build client-app",
+    "build:exchange-api": "nx build exchange-api",
+    "build:config-service": "nx build config-service"
   },
   "private": true,
   "dependencies": {

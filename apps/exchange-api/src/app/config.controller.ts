@@ -30,13 +30,13 @@ export class ConfigController {
   constructor(private readonly configService: ConfigService) {}
 
   @Post('spread')
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   setSpread(@Body() config: SpreadConfigDto) {
     return this.configService.setSpreadConfig(config);
   }
 
   @Get('spread')
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   async getSpread() {
     return this.configService.getSpreadConfig();
   }
