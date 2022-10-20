@@ -5,7 +5,7 @@ export interface Rate {
 }
 
 export interface WsEvent {
-  event: 'exchangeRate' | 'heartbeat';
+  event: 'exchangeRate' | 'heartbeat' | 'open';
   data: [number, number, number];
 }
 

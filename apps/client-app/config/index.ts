@@ -1,6 +1,7 @@
 const appConfig = {
   api: {
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3333',
+    wsUrl: process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3333',
   },
   auth0: {
     domain: process.env.NEXT_PUBLIC_AUTH0_DOMAIN || 'baio.eu.auth0.com',

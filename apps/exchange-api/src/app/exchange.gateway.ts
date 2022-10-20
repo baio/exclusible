@@ -1,5 +1,6 @@
 import { ISpreadConfig } from '@exclusible/shared';
 import {
+  OnGatewayConnection,
   SubscribeMessage,
   WebSocketGateway,
   WsResponse,
@@ -58,8 +59,9 @@ const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
     origin: '*',
   },
 })
-export class ExchangeGateway {
+export class ExchangeGateway implements OnGatewayConnection {
   private readonly krakenWs: WebSocket;
+  private readonly open$: Observable<WsResponse>;
   private readonly subscription$: Observable<WsResponse>;
 
   constructor(private readonly configService: ConfigService) {
@@ -102,6 +104,10 @@ export class ExchangeGateway {
         '{"event":"subscribe", "subscription":{"name":"trade"}, "pair":["BTC/USD"]}'
       );
     });
+  }
+  handleConnection(client: WebSocket, ...args: any[]) {
+    console.log('new connection');
+    client.send('{"event": "open"}');
   }
 
   @SubscribeMessage('subscribe')
