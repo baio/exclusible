@@ -18,6 +18,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
           domain={appConfig.auth0.domain}
           clientId={appConfig.auth0.clientId}
           redirectUri={appConfig.auth0.redirectUrl}
+          audience={`https://${appConfig.auth0.domain}/api/v2/`}
         >
           <Provider store={store}>
             <Component {...pageProps} />

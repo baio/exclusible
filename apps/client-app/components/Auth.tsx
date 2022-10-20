@@ -1,6 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
 
-
 const Auth = () => {
   const { loginWithPopup, logout, isAuthenticated } = useAuth0();
   return (
@@ -10,7 +9,9 @@ const Auth = () => {
           Log Out
         </button>
       ) : (
-        <button onClick={() => loginWithPopup()}>Log In</button>
+        <>
+          To get access to admin panel <button onClick={() => loginWithPopup()}>Log In</button>{' '}          
+        </>
       )}
     </>
   );

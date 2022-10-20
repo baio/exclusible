@@ -2,6 +2,28 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import appConfig from '../../config';
 import { ApiResult } from './sharedModels';
 
+const client = axios.create({
+  baseURL: appConfig.api.baseUrl,
+  headers: {
+    'Content-type': 'application/json',
+  },
+});
+
+export const setAxiosTokenInterceptor = async (
+  getAccessTokenSilently: any
+): Promise<void> => {
+  const accessToken = await getAccessTokenSilently();
+  client.interceptors.request.use((config) => {
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    } else {
+      config.headers.common = null;
+    }
+    return config;
+  });
+};
+
+export default client;
 export interface DataAccessConfig {
   baseUrl: string;
 }
@@ -49,7 +71,7 @@ export const get = async <T>(
 ): Promise<ApiResult<T>> => {
   const url = `${config.baseUrl}/${path}`;
   try {
-    const response = await axios.get<T>(url);
+    const response = await client.get<T>(url);
     return ofResponse(response);
   } catch (err) {
     console.log('***', err);
@@ -65,7 +87,7 @@ export const post = async <T>(
 ): Promise<ApiResult<T>> => {
   const url = `${config.baseUrl}/${path}`;
   try {
-    const response = await axios.post<T>(url, data);
+    const response = await client.post<T>(url, data);
     return ofResponse(response);
   } catch (err) {
     console.error(err);
@@ -79,7 +101,7 @@ export const remove = async <T>(
 ): Promise<ApiResult<T>> => {
   const url = `${config.baseUrl}/${path}`;
   try {
-    const response = await axios.delete<T>(url);
+    const response = await client.delete<T>(url);
     return ofResponse(response);
   } catch (err) {
     console.error(err);

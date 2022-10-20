@@ -1,9 +1,19 @@
 import { ISpreadConfig } from '@exclusible/shared';
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { IsNumber, IsNotEmpty } from 'class-validator';
+import {
+  Body,
+  Controller,
+  Get,
+  Injectable,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 import { ConfigService } from './config.service';
+
+@Injectable()
+export class JwtAuthGuard extends AuthGuard('jwt') {}
 
 export class SpreadConfigDto implements ISpreadConfig {
   @IsNotEmpty()
@@ -20,15 +30,14 @@ export class ConfigController {
   constructor(private readonly configService: ConfigService) {}
 
   @Post('spread')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   setSpread(@Body() config: SpreadConfigDto) {
     return this.configService.setSpreadConfig(config);
   }
 
   @Get('spread')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   async getSpread() {
     return this.configService.getSpreadConfig();
   }
 }
-

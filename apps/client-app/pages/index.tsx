@@ -8,25 +8,36 @@ import { SpreadConfig } from '../features/config/configModels';
 import { saveSpreadConfig } from '../features/config/configService';
 import { loadConfig, selectConfig } from '../features/config/configSlice';
 import { selectRate, subscribeExchange } from '../features/rate/rateSlice';
+import { setAxiosTokenInterceptor } from '../features/shared';
 
 let started = false;
+
+let wasAuthenticated = false;
 
 export function Index() {
   const dispatch = useAppDispatch();
 
+  const { isAuthenticated, getAccessTokenSilently } =
+    useAuth0();
+
   useEffect(() => {
     if (!started) {
       dispatch(subscribeExchange());
-      dispatch(loadConfig());
     }
     started = true;
+    if (isAuthenticated && !wasAuthenticated) {
+      setAxiosTokenInterceptor(getAccessTokenSilently).then(() =>
+        dispatch(loadConfig())
+      );
+    }
+    wasAuthenticated = isAuthenticated;
   });
 
   const onSet = async (config: SpreadConfig) => saveSpreadConfig(config);
 
   const rateState = useAppSelector(selectRate);
   const configState = useAppSelector(selectConfig);
-  const { isAuthenticated } = useAuth0();
+
   return (
     <>
       <Auth></Auth>

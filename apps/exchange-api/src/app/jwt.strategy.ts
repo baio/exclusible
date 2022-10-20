@@ -7,22 +7,24 @@ import { passportJwtSecret } from 'jwks-rsa';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
+    console.log('wtf ???');
     super({
       secretOrKeyProvider: passportJwtSecret({
-        cache: true,
-        rateLimit: true,
+        cache: false,
+        rateLimit: false,
         jwksRequestsPerMinute: 5,
-        jwksUri: `${process.env.AUTH0_ISSUER_URL}.well-known/jwks.json`,
+        jwksUri: 'https://baio.eu.auth0.com/.well-known/jwks.json',
       }),
 
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: process.env.AUTH0_AUDIENCE,
-      issuer: `${process.env.AUTH0_ISSUER_URL}`,
+      audience: `https://baio.eu.auth0.com/api/v2/`,
+      issuer: 'https://baio.eu.auth0.com/',
       algorithms: ['RS256'],
     });
   }
 
   validate(payload: unknown): unknown {
+    console.log('222', payload);
     return payload;
   }
 }

@@ -13,3 +13,4 @@ https://docs.kraken.com/websockets/#message-trade
 https://redux-observable.js.org/
 https://auth0.com/docs/quickstart/spa/react/01-login
 https://auth0.com/blog/developing-a-secure-api-with-nestjs-adding-authorization/
+https://community.auth0.com/t/unauthorizederror-jwt-malformed-in-express-js/7352/26
