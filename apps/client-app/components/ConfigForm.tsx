@@ -1,7 +1,7 @@
 import { ISpreadConfig } from '@exclusible/shared';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { SpreadConfig } from '../features/config/configModels';
-import { ApiResult, Result } from '../features/shared';
+import { ApiResult } from '../features/shared';
 
 export interface ConfigFormProps {
   config: SpreadConfig;
@@ -11,7 +11,7 @@ export interface ConfigFormProps {
 const ConfigForm = ({ onSet, config }: ConfigFormProps) => {
   return (
     <div>
-      <h2 className='subtitle'>Spread config</h2>
+      <h2 className="subtitle">Spread config</h2>
       <Formik
         enableReinitialize={true}
         initialValues={config}
@@ -52,7 +52,7 @@ const ConfigForm = ({ onSet, config }: ConfigFormProps) => {
               />
             </div>
           </div>
-          <button type="submit" className="button is-primary">
+          <button type="submit" className="button is-warning">
             Save
           </button>
         </Form>
