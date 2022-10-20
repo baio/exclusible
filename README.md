@@ -10,7 +10,7 @@ Run everything in docker `docker-compose up` then go to browser and open `http:/
 
 ## Implementation details
 
-+ Rates for BTC/USD are taken from (kraken trade websocket api)[https://docs.kraken.com/websockets/#message-trade] 
++ Rates for BTC/USD are taken from [kraken trade websocket api](https://docs.kraken.com/websockets/#message-trade)
 + After new trade price received `buy / sell offset` added to the price value and application `exchangeRate` event emitted
 + Once spread config is changed next `exchangeRate` event will be emitted with new spread based on recent trade and spread config
 
@@ -51,11 +51,11 @@ microservices which communicate with each other, main rules here:
 + When one microservice call another it should be done through abstracted proxy interface
 + Proxy interface definition should be contained in separate shared libarary
 + Proxy microservice implementation related to particular transport should be done in separate library
-+ Link between proxy interface definition and implementation should be done app boostraping with DI
++ Link between proxy interface definition and implementation should be done on app boostraping with DI
 
 ## Authorization
 
-Though task has following requirement `Mock an API for register/login/logout with JWT authentication`. Current implementation uses (Auth0 service)[https://auth0.com/] to provide real authorization implementation using jwt tokens.
+Though task has following requirement `Mock an API for register/login/logout with JWT authentication`. Current implementation uses [Auth0 service](https://auth0.com/) to provide real authorization implementation using jwt tokens.
 
 To access following API user should be authorized 
 ```
