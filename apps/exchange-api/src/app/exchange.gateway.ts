@@ -11,9 +11,11 @@ import {
   map,
   merge,
   Observable,
+  retry,
   shareReplay,
   switchMap,
   tap,
+  RetryConfig,
 } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
 import { ConfigService } from './config.service';
@@ -45,7 +47,12 @@ const mapKrakenEvent = (config: ISpreadConfig, json: object): WsResponse => {
 
 const CACHE_SIZE = 5;
 
-export const WS_URL = 'WS_URL';
+export const GATEWAY_CONFIG = 'GATEWAY_CONFIG';
+
+export interface IGatewayConfig {
+  wsUrl: string;
+  failureRetryDelay: number;
+}
 
 @WebSocketGateway({
   cors: {
@@ -56,15 +63,20 @@ export class ExchangeGateway implements OnGatewayConnection {
   private readonly subscription$: Observable<WsResponse>;
 
   constructor(
-    @Inject(WS_URL) wsUrl: string,
+    @Inject(GATEWAY_CONFIG) config: IGatewayConfig,
     private readonly configService: ConfigService
   ) {
+    const retryConfig: RetryConfig = {
+      delay: config.failureRetryDelay,
+    };
+
     const ws$ = webSocket<WsResponse>({
-      url: wsUrl,
+      url: config.wsUrl,
       WebSocketCtor: ws,
     });
 
     const data$ = ws$.pipe(
+      retry(retryConfig),
       tap((evt) => {
         if (evt.event === 'systemStatus') {
           Logger.debug('subscribe to kraken', evt);
@@ -102,6 +114,7 @@ export class ExchangeGateway implements OnGatewayConnection {
         const evt = mapKrakenEvent(config, data);
         return evt;
       }),
+      // cache latest rates, once new client connected they will ber received at once
       shareReplay(CACHE_SIZE)
     );
 

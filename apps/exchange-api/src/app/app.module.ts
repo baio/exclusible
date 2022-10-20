@@ -4,8 +4,16 @@ import { AuthzModule } from './authz.module';
 import { ConfigController } from './config.controller';
 import { ConfigService } from './config.service';
 
-import { ExchangeGateway, WS_URL } from './exchange.gateway';
+import {
+  ExchangeGateway,
+  GATEWAY_CONFIG,
+  IGatewayConfig,
+} from './exchange.gateway';
 
+const gatewayConfig: IGatewayConfig = {
+  wsUrl: process.env.KRAKEN_WS_URL,
+  failureRetryDelay: +process.env.KRAKEN_FAILURE_RETRY_DELAY || 3000,
+};
 @Module({
   imports: [
     ConfigServiceProxyModule.registerDefaultConfig(
@@ -15,7 +23,7 @@ import { ExchangeGateway, WS_URL } from './exchange.gateway';
   ],
   controllers: [ConfigController],
   providers: [
-    { provide: WS_URL, useValue: process.env.KRAKEN_WS_URL },
+    { provide: GATEWAY_CONFIG, useValue: gatewayConfig },
     ExchangeGateway,
     ConfigService,
   ],
